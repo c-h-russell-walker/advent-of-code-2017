@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 
 
-def solve_one(second=None):
+def solve(second=None):
     ctr = 0
     vals = []
     with open('./day5/input_1.txt') as input_data:
@@ -10,18 +10,15 @@ def solve_one(second=None):
 
     curr_index = 0
 
-    try:
-        while True:
-            old_index = curr_index
-            curr_index = curr_index + vals[curr_index]
-            vals[old_index] += 1
-            ctr += 1
-    except IndexError:
-        print('Number of jumps to escape maze: {}'.format(ctr))
-
-
-def solve_two():
-    pass
+    while curr_index < len(vals):
+        offset = vals[curr_index]
+        if second and offset >= 3:
+            vals[curr_index] -= 1
+        else:
+            vals[curr_index] += 1
+        curr_index += offset
+        ctr += 1
+    print('Number of jumps to escape maze: {}'.format(ctr))
 
 
 if __name__ == '__main__':
@@ -33,7 +30,4 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    if not args.second:
-        solve_one()
-    else:
-        solve_two()
+    solve(args.second)
