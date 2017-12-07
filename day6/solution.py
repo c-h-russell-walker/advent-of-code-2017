@@ -8,7 +8,11 @@ def solve(second=None):
 
     history = []
 
-    while memory_banks not in history:
+    solved = False
+    first_occurrence = None
+    second_occurrence = None
+
+    while not solved:
         history.append(memory_banks[:])
         max_val = max(memory_banks)
         index = memory_banks.index(max_val)
@@ -22,8 +26,22 @@ def solve(second=None):
             memory_banks[index] += 1
             dist_val -= 1
 
-    print('Answer: {}'.format(len(history)))
+        if not second:
+            if memory_banks in history:
+                solved = True
+        else:
+            if memory_banks in history and first_occurrence is None:
+                first_occurrence = len(history)
+                history = []
+                memory_banks[first_occurrence:]
+            elif memory_banks in history and second_occurrence is None:
+                second_occurrence = len(history)
+                solved = True
 
+    if not second:
+        print('Answer: {}'.format(len(history)))
+    else:
+        print('Answer: {}'.format(second_occurrence))
 
 if __name__ == '__main__':
     parser = ArgumentParser()
